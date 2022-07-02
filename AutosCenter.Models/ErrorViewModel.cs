@@ -1,4 +1,4 @@
-namespace AutosWorld.Models
+namespace AutosCenter.Models
 {
     public class ErrorViewModel
     {

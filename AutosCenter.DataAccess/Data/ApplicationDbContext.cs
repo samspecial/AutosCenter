@@ -1,7 +1,8 @@
-﻿using AutosWorld.Models;
+﻿
+using AutosCenter.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AutosWorld.Data
+namespace AutosCenterd.DataAccess
 {
     public class ApplicationDbContext : DbContext
     {

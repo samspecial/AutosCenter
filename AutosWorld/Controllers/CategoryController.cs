@@ -1,5 +1,6 @@
-﻿using AutosWorld.Data;
-using AutosWorld.Models;
+﻿
+using AutosCenter.Models;
+using AutosCenterd.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutosWorld.Controllers
@@ -32,6 +33,7 @@ namespace AutosWorld.Controllers
                 return View(model);
             _dbContext.Categories.Add(model);
             _dbContext.SaveChanges();
+            TempData["Success"] = "Category created successfully";
             return RedirectToAction("Index");
         }
 
@@ -58,6 +60,7 @@ namespace AutosWorld.Controllers
             
             _dbContext.Update(model);
             _dbContext.SaveChanges();
+            TempData["Success"] = "Category updated successfully";
             return RedirectToAction("Index");
         }
 
@@ -80,6 +83,7 @@ namespace AutosWorld.Controllers
                 return NotFound();
             _dbContext.Categories.Remove(obj);
             _dbContext.SaveChanges();
+            TempData["Success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }
     }

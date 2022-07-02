@@ -1,4 +1,4 @@
-using AutosWorld.Data;
+using AutosCenterd.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
