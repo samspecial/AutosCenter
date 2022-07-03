@@ -1,3 +1,5 @@
+using AutosCenter.DataAccess.Repository;
+using AutosCenter.DataAccess.Repository.IRepository;
 using AutosCenterd.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +11,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
-
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

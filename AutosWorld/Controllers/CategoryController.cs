@@ -1,4 +1,5 @@
 ﻿
+using AutosCenter.DataAccess.Repository.IRepository;
 using AutosCenter.Models;
 using AutosCenterd.DataAccess;
 using Microsoft.AspNetCore.Mvc;
@@ -7,14 +8,14 @@ namespace AutosWorld.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _dbContext;
-        public CategoryController(ApplicationDbContext dbContext)
+        private readonly ICategoryRepository _dbContext;
+        public CategoryController(ICategoryRepository dbContext)
         {
             _dbContext = dbContext;
         }
         public IActionResult Index()
         {
-            IEnumerable<Category> categoryList = _dbContext.Categories.ToList();
+            IEnumerable<Category> categoryList = _dbContext.GetAll();
             return View(categoryList);
         }
 
@@ -31,8 +32,8 @@ namespace AutosWorld.Controllers
                 ModelState.AddModelError("Custom Error", "Display name cannot match Name");
             if (!ModelState.IsValid)
                 return View(model);
-            _dbContext.Categories.Add(model);
-            _dbContext.SaveChanges();
+            _dbContext.Add(model);
+            _dbContext.Save();
             TempData["Success"] = "Category created successfully";
             return RedirectToAction("Index");
         }
@@ -41,11 +42,10 @@ namespace AutosWorld.Controllers
         {
             if (id == null || id == 0)
                 return NotFound();
-            var category = _dbContext.Categories.Find(id);
-            var categoryFromDb = _dbContext.Categories.FirstOrDefault(c => c.Id == id);
-            if (categoryFromDb == null || category == null)
+            var categoryFromDb = _dbContext.GetFirstOrDefault(x => x.Id == id);
+            if (categoryFromDb == null)
                 return NotFound();
-            return View(category);
+            return View(categoryFromDb);
 
         }
 
@@ -59,16 +59,16 @@ namespace AutosWorld.Controllers
                 return View(model);
             
             _dbContext.Update(model);
-            _dbContext.SaveChanges();
+            _dbContext.Save();
             TempData["Success"] = "Category updated successfully";
             return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null || id == 0)
+            if (id == 0)
                 return NotFound();
-            var category = _dbContext.Categories.Find(id);
+            var category = _dbContext.GetFirstOrDefault(c => c.Id == id);   
             if (category == null)
                 return NotFound();
             return View(category);
@@ -76,13 +76,15 @@ namespace AutosWorld.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int? id)
         {
-            var obj = _dbContext.Categories.Find(id);
+            if (id == null || id == 0)
+                return NotFound();
+            var obj = _dbContext.GetFirstOrDefault(c => c.Id == id);
             if (obj == null)
                 return NotFound();
-            _dbContext.Categories.Remove(obj);
-            _dbContext.SaveChanges();
+            _dbContext.Remove(obj);
+            _dbContext.Save();
             TempData["Success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }
