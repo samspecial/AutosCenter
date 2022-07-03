@@ -8,14 +8,14 @@ namespace AutosWorld.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _dbContext;
-        public CategoryController(ICategoryRepository dbContext)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _dbContext = dbContext;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            IEnumerable<Category> categoryList = _dbContext.GetAll();
+            IEnumerable<Category> categoryList = _unitOfWork.Category.GetAll();
             return View(categoryList);
         }
 
@@ -32,8 +32,8 @@ namespace AutosWorld.Controllers
                 ModelState.AddModelError("Custom Error", "Display name cannot match Name");
             if (!ModelState.IsValid)
                 return View(model);
-            _dbContext.Add(model);
-            _dbContext.Save();
+            _unitOfWork.Category.Add(model);
+            _unitOfWork.Save();
             TempData["Success"] = "Category created successfully";
             return RedirectToAction("Index");
         }
@@ -42,7 +42,7 @@ namespace AutosWorld.Controllers
         {
             if (id == null || id == 0)
                 return NotFound();
-            var categoryFromDb = _dbContext.GetFirstOrDefault(x => x.Id == id);
+            var categoryFromDb = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
             if (categoryFromDb == null)
                 return NotFound();
             return View(categoryFromDb);
@@ -58,8 +58,8 @@ namespace AutosWorld.Controllers
             if (!ModelState.IsValid)
                 return View(model);
             
-            _dbContext.Update(model);
-            _dbContext.Save();
+            _unitOfWork.Category.Update(model);
+            _unitOfWork.Save();
             TempData["Success"] = "Category updated successfully";
             return RedirectToAction("Index");
         }
@@ -68,7 +68,7 @@ namespace AutosWorld.Controllers
         {
             if (id == 0)
                 return NotFound();
-            var category = _dbContext.GetFirstOrDefault(c => c.Id == id);   
+            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);   
             if (category == null)
                 return NotFound();
             return View(category);
@@ -80,11 +80,11 @@ namespace AutosWorld.Controllers
         {
             if (id == null || id == 0)
                 return NotFound();
-            var obj = _dbContext.GetFirstOrDefault(c => c.Id == id);
+            var obj = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
             if (obj == null)
                 return NotFound();
-            _dbContext.Remove(obj);
-            _dbContext.Save();
+            _unitOfWork.Category.Remove(obj);
+            _unitOfWork.Save();
             TempData["Success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }

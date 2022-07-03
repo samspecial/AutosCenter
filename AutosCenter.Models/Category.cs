@@ -7,7 +7,7 @@ namespace AutosCenter.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Display(Name = "display order")]
         [Range(1, 200, ErrorMessage = "Number cannot be greater than 200")]
         public int DisplayOrder { get; set; }
