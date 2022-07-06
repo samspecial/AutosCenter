@@ -1,11 +1,12 @@
 ﻿
 using AutosCenter.DataAccess.Repository.IRepository;
 using AutosCenter.Models;
-using AutosCenterd.DataAccess;
+using AutosCenter.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AutosWorld.Controllers
+namespace AutosWorld.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -57,7 +58,7 @@ namespace AutosWorld.Controllers
                 ModelState.AddModelError("Custom error", "Display name mismatch");
             if (!ModelState.IsValid)
                 return View(model);
-            
+
             _unitOfWork.Category.Update(model);
             _unitOfWork.Save();
             TempData["Success"] = "Category updated successfully";
@@ -68,7 +69,7 @@ namespace AutosWorld.Controllers
         {
             if (id == 0)
                 return NotFound();
-            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);   
+            var category = _unitOfWork.Category.GetFirstOrDefault(c => c.Id == id);
             if (category == null)
                 return NotFound();
             return View(category);

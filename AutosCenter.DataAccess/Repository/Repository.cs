@@ -1,5 +1,5 @@
 ﻿using AutosCenter.DataAccess.Repository.IRepository;
-using AutosCenterd.DataAccess;
+using AutosCenter.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System;

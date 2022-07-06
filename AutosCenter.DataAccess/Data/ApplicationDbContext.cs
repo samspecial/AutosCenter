@@ -2,7 +2,7 @@
 using AutosCenter.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AutosCenterd.DataAccess
+namespace AutosCenter.DataAccess
 {
     public class ApplicationDbContext : DbContext
     {
@@ -12,5 +12,6 @@ namespace AutosCenterd.DataAccess
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<CoverType> CoverTypes { get; set; }
     }
 }

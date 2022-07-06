@@ -1,5 +1,5 @@
 ﻿using AutosCenter.DataAccess.Repository.IRepository;
-using AutosCenterd.DataAccess;
+using AutosCenter.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +15,10 @@ namespace AutosCenter.DataAccess.Repository
         {
             _dbContext = dbContext;
             Category = new CategoryRepository(_dbContext);
+            CoverType = new CoverTypeRepository(_dbContext);
         }
         public ICategoryRepository Category { get; private set; }
+        public ICoverTypeRepository CoverType { get; private set; }
 
         public void Save()
         {

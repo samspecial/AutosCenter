@@ -1,6 +1,6 @@
+using AutosCenter.DataAccess;
 using AutosCenter.DataAccess.Repository;
 using AutosCenter.DataAccess.Repository.IRepository;
-using AutosCenterd.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +31,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
