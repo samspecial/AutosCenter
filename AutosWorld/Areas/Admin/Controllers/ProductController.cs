@@ -4,6 +4,7 @@ using AutosCenter.Models;
 using AutosCenter.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using AutosCenter.Models.ViewModels;
 
 namespace AutosWorld.Areas.Admin.Controllers
 {
@@ -14,6 +15,7 @@ namespace AutosWorld.Areas.Admin.Controllers
         public ProductController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            Product product = new();
         }
         public IActionResult Index()
         {
@@ -23,23 +25,24 @@ namespace AutosWorld.Areas.Admin.Controllers
     
         public IActionResult Upsert(int? id)
         {
-            Product product = new();
-            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString()});
-            IEnumerable<SelectListItem> CoverTypeList = _unitOfWork.CoverType.GetAll().Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
+            ProductViewModel productVM = new()
+            {
+                Product = new(),
+                CategoryList  = _unitOfWork.Category.GetAll().Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() }),
+                CoverTypeList = _unitOfWork.CoverType.GetAll().Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() }),
+
+            };
             if (id == null || id == 0)
             {
-                ViewBag.CategoryList = CategoryList;
-                ViewBag.CoverTypeList = CoverTypeList;
-                return View(product);
+               
+                return View(productVM);
             }
             else
             {
 
             }
-            var categoryFromDb = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
-            if (categoryFromDb == null)
-                return NotFound();
-            return View(categoryFromDb);
+           
+            return View(productVM);
 
         }
 
