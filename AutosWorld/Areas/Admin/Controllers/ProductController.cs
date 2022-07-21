@@ -48,12 +48,12 @@ namespace AutosWorld.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Product model)
+        public IActionResult Edit(ProductViewModel viewModel, IFormFile file)
         {
-            if (!ModelState.IsValid)
-                return View(model);
+            //if (!ModelState.IsValid)
+            //    return View(viewModel);
 
-            _unitOfWork.Product.Update(model);
+            //_unitOfWork.Product.Update(viewModel);
             _unitOfWork.Save();
             TempData["Success"] = "Cover Type updated successfully";
             return RedirectToAction("Index");

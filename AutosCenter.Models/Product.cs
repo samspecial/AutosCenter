@@ -26,7 +26,7 @@ namespace AutosCenter.Models
         [Required]
         [Range(1, 10000000)]
         public double Price { get;set; }
-
+        [Display(Name="Image")]
         public string ImageUrl { get; set; }
         [Required]
         [Display(Name ="Category")]
