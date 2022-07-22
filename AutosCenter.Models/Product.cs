@@ -1,5 +1,6 @@
 ﻿
 
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace AutosCenter.Models
@@ -27,16 +28,17 @@ namespace AutosCenter.Models
         [Range(1, 10000000)]
         public double Price { get;set; }
         [Display(Name="Image")]
+        [ValidateNever]
         public string ImageUrl { get; set; }
         [Required]
         [Display(Name ="Category")]
         public int CategoryId { get; set; }
-
+        [ValidateNever]
         public Category Category { get; set; }
         [Required]
         [Display(Name="Cover Type")]
         public int CoverTypeId { get; set; }
-
+        [ValidateNever]
         public CoverType CoverType { get; set; }
     }
 }

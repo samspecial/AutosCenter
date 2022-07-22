@@ -12,10 +12,12 @@ namespace AutosWorld.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
             Product product = new();
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -48,15 +50,32 @@ namespace AutosWorld.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ProductViewModel viewModel, IFormFile file)
+        public IActionResult Edit(ProductViewModel viewModel, IFormFile? file)
         {
-            //if (!ModelState.IsValid)
-            //    return View(viewModel);
+           
+            if (ModelState.IsValid)
+            {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
 
-            //_unitOfWork.Product.Update(viewModel);
-            _unitOfWork.Save();
-            TempData["Success"] = "Cover Type updated successfully";
-            return RedirectToAction("Index");
+                if(file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath, @"images\products");
+                    var extension = Path.GetExtension(file.FileName);
+
+                    using (var fileStream = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    viewModel.Product.ImageUrl = @"\images\products\" + fileName + extension;
+                }
+
+                _unitOfWork.Product.Add(viewModel.Product);
+                _unitOfWork.Save();
+                TempData["Success"] = "Product created successfully";   
+                return RedirectToAction("Index");
+            }
+            return View(viewModel);
         }
 
         public IActionResult Delete(int id)
