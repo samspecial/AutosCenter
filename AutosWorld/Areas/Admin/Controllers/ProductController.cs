@@ -16,13 +16,12 @@ namespace AutosWorld.Areas.Admin.Controllers
         public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
-            Product product = new();
             _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
-            IEnumerable<Product> productList = _unitOfWork.Product.GetAll();
-            return View(productList);
+           
+            return View();
         }
     
         public IActionResult Upsert(int? id)
@@ -41,6 +40,8 @@ namespace AutosWorld.Areas.Admin.Controllers
             }
             else
             {
+                productVM.Product = _unitOfWork.Product.GetFirstOrDefault(p => p.Id == id);
+                return View(productVM);
 
             }
            
@@ -50,7 +51,7 @@ namespace AutosWorld.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ProductViewModel viewModel, IFormFile? file)
+        public IActionResult Upsert(ProductViewModel viewModel, IFormFile? file)
         {
            
             if (ModelState.IsValid)
@@ -102,5 +103,16 @@ namespace AutosWorld.Areas.Admin.Controllers
             TempData["Success"] = "Cover Type deleted successfully";
             return RedirectToAction("Index");
         }
+
+        #region API CALLS
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var productList = _unitOfWork.Product.GetAll(includeProperty:"Category,CoverType");
+            return Json(new { data = productList });
+        }
+
+        #endregion
     }
 }

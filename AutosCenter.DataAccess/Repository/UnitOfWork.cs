@@ -10,7 +10,7 @@ namespace AutosCenter.DataAccess.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
         public UnitOfWork(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;

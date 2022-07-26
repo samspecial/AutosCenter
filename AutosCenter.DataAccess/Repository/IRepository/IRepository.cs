@@ -10,9 +10,9 @@ namespace AutosCenter.DataAccess.Repository.IRepository
     public interface IRepository<T> where T : class
     {
         // T - Category
-        T GetFirstOrDefault(Expression<Func<T, bool>> filter);
+        T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperty = null);
 
-        IEnumerable<T> GetAll();
+        IEnumerable<T> GetAll(string? includeProperty = null);
 
         void Add(T entity);
 
