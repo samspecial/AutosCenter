@@ -1,4 +1,6 @@
-﻿using AutosCenter.Models;
+﻿using AutosCenter.DataAccess.Repository.IRepository;
+using AutosCenter.Models;
+using AutosCenter.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,15 +10,28 @@ namespace AutosWorld.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<Product> products = _unitOfWork.Product.GetAll(includeProperty:"Category,CoverType");
+            return View(products);
+        }
+
+        public IActionResult Details(int id)
+        {
+            DetailsPageViewModel details = new()
+            {
+                Count = 1,
+                Product = _unitOfWork.Product.GetFirstOrDefault(p => p.Id == id, includeProperty: "Category,CoverType")
+            };
+            return View(details);
         }
 
         public IActionResult Privacy()

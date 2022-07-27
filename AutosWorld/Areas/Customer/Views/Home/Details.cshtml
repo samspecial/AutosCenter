@@ -1,0 +1,46 @@
+﻿@model DetailsPageViewModel
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container">
+    <div class="row p-4">
+        <div class="col-sm-12 col-md-4">
+           
+             <img class="img-fluid" src="@Model.Product.ImageUrl"/>
+        </div>
+         <div class="col-sm-12 col-md-8">
+              <div>
+                <p>@Model.Product.Name</p>
+                <p>@Model.Product.Model</p>
+                <p>@Model.Product.Manufacturer</p>
+                <p>@Model.Product.Year</p>
+                <p><strike>@Model.Product.ListPrice</strike></p>
+                <p>@Model.Product.Price</p>
+                <p>@Html.Raw(Model.Product.Description)</p>
+            </div>
+        </div>
+       <form asp-action="Cart" method="post">
+           <div class="row mt-4">
+               <div class="col-sm-6 mb-4">
+               <label asp-for="@Model.Count"></label>
+                </div>
+               <div class="col-sm-6">
+               <input type="number" asp-for="@Model.Count" class="form-control"/>
+               </div>
+           </div>
+           <div class="row">
+               <div class="col-sm-6">
+                    <a asp-action="Index" class="btn btn-secondary btn-block form-control">Back to list</a>
+
+               </div>
+               <div class="col-sm-6">
+
+                    <button type="submit" class="btn btn-primary btn-block form-control">Add to cart</button>
+               </div>
+           </div>
+       </form>
+    </div>
+
+</div>
