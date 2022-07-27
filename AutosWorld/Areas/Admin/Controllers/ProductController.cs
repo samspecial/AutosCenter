@@ -64,14 +64,31 @@ namespace AutosWorld.Areas.Admin.Controllers
                     var uploads = Path.Combine(wwwRootPath, @"images\products");
                     var extension = Path.GetExtension(file.FileName);
 
+                    if(viewModel.Product.ImageUrl != null)
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, viewModel.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
                     using (var fileStream = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
                     viewModel.Product.ImageUrl = @"\images\products\" + fileName + extension;
                 }
-
-                _unitOfWork.Product.Add(viewModel.Product);
+                if(viewModel.Product.Id == 0)
+                {
+                    _unitOfWork.Product.Add(viewModel.Product);
+                    //TempData["Success"] = "Product created successfully";
+                }
+                else
+                {
+                    _unitOfWork.Product.Update(viewModel.Product);
+                    //TempData["Success"] = "Product updated successfully";
+                }
                 _unitOfWork.Save();
                 TempData["Success"] = "Product created successfully";   
                 return RedirectToAction("Index");
@@ -104,8 +121,26 @@ namespace AutosWorld.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        #region API CALLS
+        [HttpDelete]
+        public IActionResult DeleteProduct(int? id)
+        {
+            var product = _unitOfWork.Product.GetFirstOrDefault(c => c.Id == id);
+            if(product == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, product.ImageUrl.TrimStart('\\'));
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+            _unitOfWork.Product.Remove(product);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Delete successful" });
+        }
 
+        #region API CALLS
+         
         [HttpGet]
         public IActionResult GetAll()
         {
