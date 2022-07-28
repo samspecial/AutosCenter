@@ -17,10 +17,13 @@ namespace AutosCenter.DataAccess.Repository
             Category = new CategoryRepository(_dbContext);
             CoverType = new CoverTypeRepository(_dbContext);
             Product = new ProductRepository(_dbContext);
+            Company = new CompanyRepository(_dbContext);
         }
         public ICategoryRepository Category { get; private set; }
         public ICoverTypeRepository CoverType { get; private set; }
         public IProductRepository Product { get; private set; }
+
+        public ICompanyRepository Company { get; private set; } 
 
         public void Save()
         {
