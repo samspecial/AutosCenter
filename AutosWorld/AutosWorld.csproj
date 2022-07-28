@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutosCenter.DataAccess\AutosCenter.DataAccess.csproj" />
+    <ProjectReference Include="..\AutosCenter.Utility\AutosCenter.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>

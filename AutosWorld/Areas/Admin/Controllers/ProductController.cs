@@ -44,9 +44,6 @@ namespace AutosWorld.Areas.Admin.Controllers
                 return View(productVM);
 
             }
-           
-            return View(productVM);
-
         }
 
         [HttpPost]
