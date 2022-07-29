@@ -22,7 +22,7 @@ namespace AutosCenter.Models
         [Display(Name="Postal Code")]
         public string? PostalCode { get; set; }
 
-        //[DataType(DataType.PhoneNumber)]
+        
         [Display(Name="Phone Number")]
         public string? PhoneNumber { get; set; }
     }

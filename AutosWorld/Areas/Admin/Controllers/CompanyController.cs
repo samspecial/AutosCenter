@@ -52,15 +52,14 @@ namespace AutosWorld.Areas.Admin.Controllers
                 if(model.Id == 0)
                 {
                     _unitOfWork.Company.Add(model);
-                    TempData["Success"] = "Product created successfully";
+                    TempData["Success"] = "Company created successfully";
                 }
                 else
                 {
                     _unitOfWork.Company.Update(model);
-                    TempData["Success"] = "Product updated successfully";
+                    TempData["Success"] = "Company updated successfully";
                 }
                 _unitOfWork.Save();
-                TempData["Success"] = "Product created successfully";   
                 return RedirectToAction("Index");
             }
             return View(model);
