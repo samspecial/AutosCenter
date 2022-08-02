@@ -13,6 +13,10 @@ namespace AutosCenter.DataAccess.Repository.IRepository
 
         IProductRepository Product { get; } 
         ICompanyRepository Company { get; } 
+
+        IApplicationUserRepository ApplicationUser { get; }
+
+        IShoppingCartRepository ShoppingCart { get; }
         void Save();
     }
 }
